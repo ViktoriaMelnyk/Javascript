@@ -45,6 +45,7 @@ h1:hover {
     height: 300px;
     width: 300px;
     border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 .item:hover {
@@ -54,12 +55,9 @@ h1:hover {
 .item .tools {
     padding: 10px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
-#deleteNote {
-    margin-left: 210px;
-}
 
 .fas {
     cursor: pointer;
@@ -75,11 +73,13 @@ h1:hover {
     background: rgb(0, 0, 0, 0);
     outline: none;
     height: 300px;
-    width: 250px;
+    max-width: 250px;
+    width: 100%;
     padding: 20px;
     border: none;
     color: #fff;
     font-size: 17px;
+    overflow: hidden;
 }
 
 /* .name {

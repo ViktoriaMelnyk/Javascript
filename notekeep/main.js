@@ -1,4 +1,61 @@
-// const lsKey = "notes";
+const addBTn = document.getElementById('add');
+const container = document.getElementById('notes__container');
+const notes = JSON.parse(localStorage.getItem('notes'));
+
+console.log(notes);
+if(notes){
+    notes.forEach(note => addNewNote(note));
+}
+
+addBTn.addEventListener('click', () => addNewNote('Hello'));
+
+function addNewNote(text = '') {
+    const note = document.createElement('div');
+    note.classList.add('item');
+    note.innerHTML = `
+        <div class="tools">
+            <div class="tools-left">
+                <i class="fas fa-thumbtack" id='pinnNote'></i>
+                <i class="fas fa-palette"></i>
+                <i class="fas fa-pen-nib" id="edit"></i>
+            </div>
+            <i class="fas fa-times" id="delete" title="Usunąć notatkę"></i>
+        </div>
+        <div class="main ${text ? '' : 'hidden'}"></div>
+        <textarea class = "${text ? 'hidden' : ''}"></textarea>
+    `;
+    const editNote = note.querySelector('#edit');
+    const deleteNote = note.querySelector('#delete');
+    const main =note.querySelector  ('.main');
+    const textArea = note.querySelector('textarea');
+
+    deleteNote.addEventListener('click', () =>{
+        note.remove();
+        updateLS();
+    });
+    editNote.addEventListener('click', () => {
+        main.classList.toggle('hidden');
+        textArea.classList.toggle('hidden');  
+    });
+
+
+    updateLS();
+    container.appendChild(note);
+    
+}
+
+function updateLS() {
+    const notesText = document.querySelectorAll('textarea');
+    const notes =[];
+    notesText.forEach(note => notes.push(note.value));
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+
+// console.log(notesFromLocalStorage);
+
+
+
 // // 1. zapisywanie notatki i tablicy notatek w localStorage
 
 // // notatka: title, content, colour, pinned, createDate
@@ -16,11 +73,10 @@
 // notes.push(note);
 // notes.push(note);
 
-// localStorage.setItem(lsKey, JSON.stringify(notes));
+// localStorage.setItem(lsKey, );
 
 // // 2. wczytywanie z localStorage
-// const notesFromLocalStorage = JSON.parse(localStorage.getItem(lsKey));
-// console.log(notesFromLocalStorage);
+// 
 
 // const mappedNotes = notesFromLocalStorage.map((note) => {
 //   note.createDate = new Date(note.createDate);
