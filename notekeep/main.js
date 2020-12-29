@@ -5,7 +5,7 @@ const noteForm = document.getElementById('note-form');
 const noteTitle = document.getElementById('note-title');
 const noteText = document.getElementById('note-text');
 const container = document.getElementById('notes__container');
-//const deleteIcon = document.getElementById('delete');
+
 
 let notes = [];
 
@@ -30,29 +30,78 @@ function buildNotes() {
     container.textContent = '';
     //Build items
     notes.forEach((note) => {
-        const { title, text, createDate} = note;
+        const { title, text, createDate } = note;
         console.log(title, text, createDate);
+
         //Item
         const item = document.createElement('div');
         item.classList.add('item');
-        item.innerHTML = `
-            <div class="tools">
-                <div class="tools-left">
-                    <i class="fas fa-thumbtack" id='pinnNote'></i>
-                    <i class="fas fa-palette" id='colour'></i>
-                    <i class="fas fa-edit"></i>
-                </div>
-                <div class="date">${createDate.toLocaleString()}</div>
-                <i class="fas fa-times" id="delete" title="Usunąć notatkę"></i>
-            </div>
-            <div class="title">${title}</div>
-            <textarea class="note-textarea" maxlenght=“10”>${text}</textarea>
-        `;
+        //tools
+        const tools = document.createElement('div');
+        tools.classList.add('tools');
+        //tools-left
+        const toolsLeft = document.createElement('div');
+        toolsLeft.classList.add('tools-left');
+        //icons
+        const pinnIcon = document.createElement('i');
+        pinnIcon.classList.add('fas', 'fa-thumbtack');
+        //pinnIcon.setAttribute('onclick', pinnNote());
+        const paletteIcon = document.createElement('i');
+        paletteIcon.classList.add('fas', 'fa-palette');
+        //paletteIcon.setAttribute('onclick', chengeColour());
+        const editIcon = document.createElement('i');
+        editIcon.classList.add('fas', 'fa-edit');
         
+        //date
+        const date = document.createElement('div');
+        date.classList.add('date');
+        date.textContent = createDate;
+        //delete icon
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fas', 'fa-times');
+        deleteIcon.setAttribute('title','Usunąć notatkę');
+        deleteIcon.setAttribute('id','delete');
+        deleteIcon.setAttribute('onclick',`deleteNote('${createDate}')`);
+
+        //title
+        const Title = document.createElement('div');
+        Title.classList.add('title');
+        Title.textContent= title;
+        const Text = document.createElement('textarea');
+        Text.classList.add('note-textarea');
+        Text.textContent= text;
+
+        // append
+        toolsLeft.append(pinnIcon, paletteIcon, editIcon);
+        tools.append(toolsLeft, date, deleteIcon);
+        item.append(tools,Title,Text);
         container.appendChild(item);
+
+
+        //pinnIcon.setAttribute('onclick', pinnNote());
+        // item.innerHTML = `
+        //     <div class="tools">
+        //         <div class="tools-left">
+        //             <i class="fas fa-thumbtack" id='pinnNote'></i>
+        //             <i class="fas fa-palette" id='colour'></i>
+        //             <i class="fas fa-edit"></i>
+        //         </div>
+        //         <div class="date">${createDate.toLocaleString()}</div>
+        //         <i class="fas fa-times" id="delete" title="Usunąć notatkę"></i>
+        //     </div>
+        //     <div class="title">${title}</div>
+        //     <textarea class="note-textarea" maxlenght=“10”>${text}</textarea>
+        // `;
+
+        // container.appendChild(item);
+        // const deleteNote = item.querySelector('#delete');
+        // deleteNote.addEventListener('click',()=>{
+        //     item.remove();
+
+        // });
     });
 }
-// delete note
+
 
 //fetch Notes
 function fetchNotes() {
@@ -65,12 +114,25 @@ function fetchNotes() {
                 title: 'To jest twój notatnik',
                 text:
               ' Tu morzesz tworzyć notatki w różnych kolorach, najważniejsze przypinać, jeżeli zamkniesz stronę, to zawsze możesz wrócic i zobaczyć swoje notatki',
-                createDate: new Date(),
+                createDate: new Date().toLocaleString(),
             },
         ];
         localStorage.setItem('notatki', JSON.stringify(notes));
     }
     buildNotes();
+}
+//delete note
+
+// eslint-disable-next-line no-unused-vars
+function deleteNote(createDate) {
+    notes.forEach((note,i) =>{
+        if(note.createDate===createDate){
+            notes.splice(i,1);
+        }
+    });
+    //update LS
+    localStorage.setItem('notatki',JSON.stringify(notes));
+    fetchNotes();
 }
 //Handle data from form
 function storeNote(e) {
@@ -81,7 +143,7 @@ function storeNote(e) {
     const note = {
         title: titleValue,
         text: textValue,
-        createDate: new Date(),
+        createDate: new Date().toLocaleString(),
         // colour: true
     };
     notes.push(note);
@@ -93,6 +155,8 @@ function storeNote(e) {
 }
 
 // event listener
+
+
 noteForm.addEventListener('submit', storeNote);
 
 fetchNotes();
@@ -201,7 +265,7 @@ fetchNotes();
 // }
 
 // // usuwanie elementu ze struktury html
-// // notesContainer.removeChild()
+// // notesContainer
 
 // // 4. pobieranie danych z formularzy
 // document.querySelector("#noteAdd").addEventListener("click", onNewNote);
