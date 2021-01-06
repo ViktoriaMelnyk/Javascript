@@ -11,6 +11,7 @@
 
 <body>
     <h1 id="show-modal">Utwórz Notatkę</h1>
+    
     <div class="container" id="notes__container">
     </div>
     <div class="modal-container" id="modal">
@@ -29,7 +30,12 @@
                         <label for="note-text" class="form-label">Notatka..</label>
                         <textarea class="text-input" id="note-text"></textarea>
                     </div>
+                    <div class="form-gruop">
+                        <label for="note-color" class="form-label">Kolor notatki</label>
+                        <input id="note-color" type="color" class="form-input" value="#000000">
+                    </div>
                     <button type="submit">Zapisz</button>
+                    
                 </form>
             </div>
         </div>

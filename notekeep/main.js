@@ -5,7 +5,7 @@ const noteForm = document.getElementById('note-form');
 const noteTitle = document.getElementById('note-title');
 const noteText = document.getElementById('note-text');
 const container = document.getElementById('notes__container');
-
+const noteColor = document.getElementById('note-color');
 
 let notes = [];
 
@@ -30,8 +30,8 @@ function buildNotes() {
     container.textContent = '';
     //Build items
     notes.forEach((note) => {
-        const { title, text, createDate } = note;
-        console.log(title, text, createDate);
+        const { title, text, createDate,color } = note;
+        console.log(title, text, createDate, color);
 
         //Item
         const item = document.createElement('div');
@@ -76,6 +76,10 @@ function buildNotes() {
         tools.append(toolsLeft, date, deleteIcon);
         item.append(tools,Title,Text);
         container.appendChild(item);
+        //item.style.background =`rgba('${color}',.5)`;
+        item.style.background = color;
+        item.style.opacity = '0.8';
+        
 
 
         //pinnIcon.setAttribute('onclick', pinnNote());
@@ -109,14 +113,7 @@ function fetchNotes() {
     if (localStorage.getItem('notatki')) {
         notes = JSON.parse(localStorage.getItem('notatki'));
     } else {
-        notes = [
-            {
-                title: 'To jest twój notatnik',
-                text:
-              ' Tu morzesz tworzyć notatki w różnych kolorach, najważniejsze przypinać, jeżeli zamkniesz stronę, to zawsze możesz wrócic i zobaczyć swoje notatki',
-                createDate: new Date().toLocaleString(),
-            },
-        ];
+        notes = [];
         localStorage.setItem('notatki', JSON.stringify(notes));
     }
     buildNotes();
@@ -139,15 +136,16 @@ function storeNote(e) {
     e.preventDefault();
     const titleValue = noteTitle.value;
     let textValue = noteText.value;
-    console.log(titleValue, textValue);
+    let colorValue = noteColor.value;
+    console.log(titleValue, textValue,colorValue);
     const note = {
         title: titleValue,
         text: textValue,
         createDate: new Date().toLocaleString(),
-        // colour: true
+        color: colorValue,
     };
     notes.push(note);
-    console.log(notes);
+    //console.log(notes);
     localStorage.setItem('notatki', JSON.stringify(notes));
     fetchNotes();
     noteForm.reset();
