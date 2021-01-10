@@ -46,11 +46,6 @@ function buildNotes() {
         const pinnIcon = document.createElement('i');
         pinnIcon.classList.add('fas', 'fa-thumbtack');
         //pinnIcon.setAttribute('onclick', pinnNote());
-        const paletteIcon = document.createElement('i');
-        paletteIcon.classList.add('fas', 'fa-palette');
-        //paletteIcon.setAttribute('onclick', chengeColour());
-        const editIcon = document.createElement('i');
-        editIcon.classList.add('fas', 'fa-edit');
         
         //date
         const date = document.createElement('div');
@@ -72,7 +67,7 @@ function buildNotes() {
         Text.textContent= text;
 
         // append
-        toolsLeft.append(pinnIcon, paletteIcon, editIcon);
+        toolsLeft.append(pinnIcon);
         tools.append(toolsLeft, date, deleteIcon);
         item.append(tools,Title,Text);
         container.appendChild(item);
@@ -80,29 +75,6 @@ function buildNotes() {
         item.style.background = color;
         item.style.opacity = '0.8';
         
-
-
-        //pinnIcon.setAttribute('onclick', pinnNote());
-        // item.innerHTML = `
-        //     <div class="tools">
-        //         <div class="tools-left">
-        //             <i class="fas fa-thumbtack" id='pinnNote'></i>
-        //             <i class="fas fa-palette" id='colour'></i>
-        //             <i class="fas fa-edit"></i>
-        //         </div>
-        //         <div class="date">${createDate.toLocaleString()}</div>
-        //         <i class="fas fa-times" id="delete" title="Usunąć notatkę"></i>
-        //     </div>
-        //     <div class="title">${title}</div>
-        //     <textarea class="note-textarea" maxlenght=“10”>${text}</textarea>
-        // `;
-
-        // container.appendChild(item);
-        // const deleteNote = item.querySelector('#delete');
-        // deleteNote.addEventListener('click',()=>{
-        //     item.remove();
-
-        // });
     });
 }
 
@@ -159,117 +131,3 @@ noteForm.addEventListener('submit', storeNote);
 
 fetchNotes();
 
-// console.log(notes);
-// if(notes){
-//     notes.forEach(note => addNewNote(note));
-// }
-
-// addBTn.addEventListener('click', () => addNewNote());
-
-// function addNewNote() {
-//     const note = document.createElement('div');
-//     note.classList.add('item');
-//     note.innerHTML = `
-//         <div class="tools">
-//             <div class="tools-left">
-//                 <i class="fas fa-thumbtack" id='pinnNote'></i>
-//                 <i class="fas fa-palette" id='colour'></i>
-//             </div>
-//             <i class="fas fa-times" id="delete" title="Usunąć notatkę"></i>
-//         </div>
-//         <div class="colours"></div>
-
-//         <textarea class="note-textarea" maxlenght=“10”></textarea>
-//     `;
-//     const deleteNote = note.querySelector('#delete');
-//     deleteNote.addEventListener('click', () =>{
-//         note.remove();
-//         updateLS();
-//     });
-
-//     updateLS();
-//     container.appendChild(note);
-
-// }
-
-
-// // 1. zapisywanie notatki i tablicy notatek w localStorage
-
-// // notatka: title, content, colour, pinned, createDate
-// const notes = [];
-
-// const note = {
-//   title: "pierwsza notatka",
-//   content: "pierwsza notatka",
-//   colour: "#ff1280",
-//   pinned: false,
-//   createDate: new Date(),
-// };
-
-// notes.push(note);
-// notes.push(note);
-// notes.push(note);
-
-// localStorage.setItem(lsKey, );
-
-// // 2. wczytywanie z localStorage
-//
-
-// const mappedNotes = notesFromLocalStorage.map((note) => {
-//   note.createDate = new Date(note.createDate);
-//   return note;
-// });
-
-// //3. modyfkowanie struktury htmla
-// function showNotes() {
-//   const notesContainer = document.querySelector("main");
-//   // pierwszy sposób
-//   // for(const note of mappedNotes) {
-//   //     // console.log(note.createDate.toLocaleString());
-//   //     const htmlNote =
-//   //         `<section class="note">
-//   //             <h1>${note.title}</h1>
-//   //             <p>${note.content}</p>
-//   //             <h4>${note.createDate.toLocaleString()}</h4>
-//   //             <button>usuń</button>
-//   //         </section>`;
-//   //     notesContainer.innerHTML += htmlNote;
-//   // }
-
-//   // drugi sposób
-//   for (const note of mappedNotes) {
-//     // console.log(note.createDate.toLocaleString());
-//     const htmlNote = document.createElement("section");
-//     const htmlTitle = document.createElement("h1");
-//     const htmlContent = document.createElement("p");
-//     const htmlDate = document.createElement("h4");
-//     const htmlRemoveBtn = document.createElement("button");
-
-//     htmlTitle.innerHTML = note.title;
-//     htmlContent.innerHTML = note.content;
-//     htmlDate.innerHTML = note.createDate.toLocaleString();
-//     htmlRemoveBtn.innerHTML = "usuń";
-
-//     // htmlRemoveBtn.addEventListener()
-
-//     htmlNote.classList.add("note");
-//     htmlNote.appendChild(htmlTitle);
-//     htmlNote.appendChild(htmlContent);
-//     htmlNote.appendChild(htmlDate);
-//     htmlNote.appendChild(htmlRemoveBtn);
-
-//     notesContainer.appendChild(htmlNote);
-//   }
-// }
-
-// // usuwanie elementu ze struktury html
-// // notesContainer
-
-// // 4. pobieranie danych z formularzy
-// document.querySelector("#noteAdd").addEventListener("click", onNewNote);
-
-// function onNewNote() {
-//   const title = document.querySelector("#noteTitle").value;
-//   const content = document.querySelector("#noteContent").value;
-//   console.log(title, content);
-// }
