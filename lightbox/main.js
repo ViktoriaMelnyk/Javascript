@@ -1,37 +1,52 @@
-const imgs = document.querySelectorAll(".gallery img");
-for (let index = 0; index < imgs.length; index++) {
-  const img = imgs[index];
-  img.addEventListener("click", showLightbox);
+const lightbox = document.getElementById('lightbox');
+const images = document.querySelectorAll('img');
+const arrowLeft = document.createElement('button');
+const arrowRight = document.createElement('button');
+const iconL = document.createElement('i');
+const iconR = document.createElement('i');
+let activeImg;
+const img = document.createElement('img');
+iconL.className ='fas fa-chevron-left';
+iconR.className ='fas fa-chevron-right';
+arrowLeft.className ='arrow left-arrow';
+arrowRight.className ='arrow right-arrow';
+arrowLeft.appendChild(iconL);
+arrowRight.appendChild(iconR);
+
+
+images.forEach(image =>{
+    image.addEventListener('click', (e) => {
+        lightbox.classList.add('visible');
+        img.src = image.src;
+        while (lightbox.firstChild) {
+            lightbox.removeChild(lightbox.firstChild);
+        }
+        activeImg = image.getAttribute('img__id');
+        lightbox.append(img,arrowLeft,arrowRight);
+        console.log(e);
+        console.log(activeImg);
+    });
+});
+
+function nextI() {
+    activeImg++;
+    if (activeImg > 8) activeImg = 0;
+    img.src = images[activeImg].src;
+    
+}
+function prevI() {
+    activeImg--;
+    if (activeImg < 0 ) activeImg = 8;
+    img.src = images[activeImg].src;
 }
 
-function showLightbox(ev) {
-  // pobranie poprzedniego elementu
-  const prevEl = ev.target.prevElementSibling;
-  const nextEl = ev.target.nextElementSibling;
-  console.log(ev);
-  // pobierz elementy z html-a
-  const lightbox = document.querySelector(".lightbox");
-  const img = document.querySelector(".lightbox img");
-  // pobierz url klikniętej grafiki
-  const imgUrl = ev.target.src;
-  // przypisz do grafiki w lightboxie
-  img.src = imgUrl;
-  // pokaż lightbox
-  lightbox.classList.add("visible");
-} 
 
-lightbox.addEventListener("click", hideLightbox);
-
-function hideLightbox() {
-  lightbox.classList.remove("visible");
+function hideLightbox(e) {
+    if (e.target !== e.currentTarget) return;
+    lightbox.classList.remove('visible');
+    console.log(e);
 }
+arrowLeft.addEventListener('click', prevI);
+arrowRight.addEventListener('click', nextI);
+lightbox.addEventListener('click', hideLightbox);
 
-// arrowNext.addEventListener("click", nextPhoto);
-
-// function nextPhoto(ev) {
-//   const arrowNext = document.querySelector(".arrowNext");
-//   const img = document.querySelector(".arrowNext img");
-//   const imgUrl = ev.target.src;
-//   img.src = imgUrl;
-//   const next = ev.target.nextElementSibling;
-// }
