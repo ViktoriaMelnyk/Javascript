@@ -30,8 +30,8 @@ function buildNotes() {
     container.textContent = '';
     //Build items
     notes.forEach((note) => {
-        const { title, text, createDate,color } = note;
-        console.log(title, text, createDate, color);
+        const { title, text, createDate,color,pinn } = note;
+        console.log(title, text, createDate, color,pinn);
 
         //Item
         const item = document.createElement('div');
@@ -45,8 +45,8 @@ function buildNotes() {
         //icons
         const pinnIcon = document.createElement('i');
         pinnIcon.classList.add('fas', 'fa-thumbtack');
-        //pinnIcon.setAttribute('onclick', pinnNote());
-        
+        pinnIcon.setAttribute('onclick', `pinnNote('${createDate}')`);
+    
         //date
         const date = document.createElement('div');
         date.classList.add('date');
@@ -101,6 +101,18 @@ function deleteNote(createDate) {
     });
     //update LS
     localStorage.setItem('notatki',JSON.stringify(notes));
+    fetchNotes();
+}
+// eslint-disable-next-line no-unused-vars
+function pinnNote(createDate) {
+    notes.forEach((note, i) => {
+        if (note.createDate === createDate) {
+            notes.splice(i, 1);
+            notes.unshift(note);
+        }
+    });
+    //update LS
+    localStorage.setItem('notatki', JSON.stringify(notes));
     fetchNotes();
 }
 //Handle data from form
