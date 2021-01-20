@@ -82,6 +82,7 @@ function storeWeather(e) {
     fetch(url)
         .then(function (resp) {
             return resp.json();
+            
         })
         .then(function (data) {
             console.log(data);
@@ -99,8 +100,7 @@ function storeWeather(e) {
             weathers.push(weather);
             localStorage.setItem('pogoda', JSON.stringify(weathers));
             fetchWeather();
-        })
-        .catch(function () {});
+        });
 }
 
 form.addEventListener('submit', storeWeather);
