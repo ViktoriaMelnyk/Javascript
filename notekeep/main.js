@@ -30,8 +30,8 @@ function buildNotes() {
     container.textContent = '';
     //Build items
     notes.forEach((note) => {
-        const { title, text, createDate,color,pinn } = note;
-        console.log(title, text, createDate, color,pinn);
+        const { title, text, createDate,color } = note;
+        console.log(title, text, createDate, color);
 
         //Item
         const item = document.createElement('div');
