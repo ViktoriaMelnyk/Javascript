@@ -73,6 +73,13 @@ audio {
     background-color: #fff;
 }
 
+.myTrack {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(20px, auto);
+    grid-gap: 15px;
+}
+
 .myTrack div {
     border-radius: 5px;
     margin-bottom: 10px;
@@ -80,9 +87,30 @@ audio {
     padding: 10px 25px;
     position: relative;
     display: flex;
+    overflow: hidden;
+    position: relative;
     align-items: center;
-    justify-content: center;
-    box-shadow: 8px 4px 15px rgba(0, 0, 0, .25), -8px -4px 15px rgba(255, 255, 255, 1), 8px 4px 15px rgba(0, 0, 0, .1) inset, -8px -4px 15px rgba(255, 255, 255, .3) inset;
+    box-shadow: 8px 8px 30px rgba(0, 0, 0, .25);
+}
+
+.myTrack div:before {
+    position: absolute;
+    content: '';
+    width: 140px;
+    height: 140px;
+    border: 20px solid #c0c0c0;
+    right: -50px;
+    border-radius: 50%;
+}
+
+.myTrack div:after {
+    position: absolute;
+    content: '';
+    width: 90px;
+    height: 90px;
+    border: 30px solid #c0c0c0;
+    right: -50px;
+    border-radius: 50%;
 }
 
 .myTrack .my_track_play {
@@ -104,7 +132,7 @@ audio {
 
 .my_track_play span {
     border: 10px solid transparent;
-    border-left: 10px solid #fff;
+    border-left: 10px solid #18ce16;
     display: block;
     width: 10px;
     height: 10px;
@@ -114,9 +142,24 @@ audio {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: red;
     border: none;
-    margin: 0 15px;
+    outline: none;
+    transition: all .4s ease;
+    cursor: pointer;
+    margin: 0 0px;
+}
+
+.my_track_edit.notRec {
+    background-color: #f00;
+}
+
+.my_track_edit.rec {
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    background-color: #f00;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    border-radius: 3px;
 }
 
 .buttons {
@@ -187,90 +230,3 @@ h1 {
     margin-bottom: 45px;
     font-size: 30px;
 }
-
-/* 
-
-
-
-
-
-
-
-.buttons {}
-
-.recordBtn {
-    display: block;
-    width: 35px;
-    height: 35px;
-    background-color: red;
-    border: 0;
-    border-radius: 35px;
-    margin: 18px;
-    outline: none;
-    cursor: pointer;
-}
-
-.recordBtn.notRec {
-    background-color: darkred;
-}
-
-.recordBtn.rec {
-    animation-name: pulse;
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    border-radius: 0px;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0px 0px 5px 0px rgba(173, 0, 0, .3);
-    }
-    65% {
-        box-shadow: 0px 0px 5px 13px rgba(173, 0, 0, .3);
-    }
-    90% {
-        box-shadow: 0px 0px 5px 13px rgba(173, 0, 0, 0);
-    }
-}
-
-.playBtn {
-    margin-top: 17px;
-    display: block;
-    outline: none;
-    background: transparent;
-    box-sizing: border-box;
-    width: 0;
-    height: 35px;
-    border-color: transparent transparent transparent #fff;
-    cursor: pointer;
-    border-width: 17px 0 17px 25px;
-}
-
-#menuBtn {
-    background-color: #fff;
-    width: 35px;
-    height: 35px;
-    margin-top: 17px;
-    outline: none;
-    border: none;
-}
-
-.tracks {
-    
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-}
-
-.tracks div+div {
-    margin-left: 10px;
-}
-
-.visible {
-    display: block;
-    width: 340px;
-    height: 55px;
-    border: 2px solid #fff;
-    padding: 10px;
-}  */

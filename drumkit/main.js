@@ -3,15 +3,51 @@ document
     .querySelector('#recordBtn')
     .addEventListener('click', onRecordBtnClick);
 
-//document.querySelector("#playBtn").addEventListener("click", onPlayBtnClick);
 const recordBtn = document.querySelector('#recordBtn');
-// const tracks = document.querySelector('.tracks');
 let recordStartTime;
 const recordedSounds = [];
 let testArray = [];
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
+}
+
+function onRecordBtnClick() {
+    recordStartTime = Date.now();
+    if (recordBtn.classList.contains('notRec')) {
+        recordBtn.classList.remove('notRec');
+        recordBtn.classList.add('rec');
+    } else {
+        recordBtn.classList.remove('rec');
+        recordBtn.classList.add('notRec');
+        recordedSounds.push(testArray);
+        console.log(recordedSounds);
+        testArray = [];
+        document.getElementById('myTrack').innerHTML = '';
+        for (var key in recordedSounds) {
+            let text = document.createElement('div');
+            text.innerHTML = `<button data-id='${key}' class='my_track_edit notRec'><span></span></button> <button data-playid='${key}' class='my_track_play'><span></span></button>`;
+            document.getElementById('myTrack').appendChild(text);
+            clickListener('.my_track_play', onPlayBtnClick);
+            clickListener('.my_track_edit', rewriteTrack);
+        }
+    }
+}
+
+function rewriteTrack() {
+    let dataid = this.dataset.id;
+
+    recordStartTime = Date.now();
+    if (this.classList.contains('notRec')) {
+        this.classList.remove('notRec');
+        this.classList.add('rec');
+    } else {
+        this.classList.remove('rec');
+        this.classList.add('notRec');
+        recordedSounds[dataid] = testArray;
+        console.log(recordedSounds);
+        testArray = [];
+    }
 }
 
 function onKeyPress(ev) {
@@ -51,7 +87,7 @@ function onKeyPress(ev) {
             id: soundName,
             time: soundTime,
         };
-        if (recordBtn.classList.contains('notRec')) {
+        if (!document.querySelectorAll('.rec')[0]) {
             document.querySelector('#' + soundName).parentElement.style.background =
         'rgba(' +
         getRandomInt(255) +
@@ -84,37 +120,24 @@ function onKeyPress(ev) {
     }
 }
 
-function onRecordBtnClick() {
-    recordStartTime = Date.now();
-    if (recordBtn.classList.contains('notRec')) {
-        recordBtn.classList.remove('notRec');
-        recordBtn.classList.add('rec');
-    } else {
-        recordBtn.classList.remove('rec');
-        recordBtn.classList.add('notRec');
-        recordedSounds.push(testArray);
-        testArray = [];
-        console.log(recordedSounds);
-        document.getElementById('myTrack').innerHTML = '';
-        for (var key in recordedSounds) {
-            let text = document.createElement('div');
-            text.innerHTML =
-        '<button data-id=\'' +
-        key +
-        '\' class=\'my_track_edit\'><span></span></button> <button class=\'my_track_play\'><span></span></button>';
-            document.getElementById('myTrack').appendChild(text);
-        }
+function clickListener(classname, runfunc) {
+    var clickSelector = document.querySelectorAll(classname);
+
+    for (var i = 0; i < clickSelector.length; i++) {
+        clickSelector[i].addEventListener('click', runfunc);
     }
 }
 
-// function onPlayBtnClick() {
-//     for (let index = 0; index < recordedSounds.length; index++) {
-//         const soundObj = recordedSounds[index];
-//         setTimeout(() => {
-//             playSound(soundObj.id);
-//         }, soundObj.time);
-//     }
-// }
+function onPlayBtnClick() {
+    let dataid = this.dataset.playid;
+    console.log(dataid);
+    for (let index = 0; index < recordedSounds[dataid].length; index++) {
+        const soundObj = recordedSounds[dataid][index];
+        setTimeout(() => {
+            playSound(soundObj.id);
+        }, soundObj.time);
+    }
+}
 
 function playSound(id) {
     const sound = document.querySelector('#' + id);
