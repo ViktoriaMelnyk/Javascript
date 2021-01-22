@@ -37,6 +37,7 @@ canvas {
 }
 h1{
     font-size: 40px;
+    display: none;
 }
 button{
     background: rgb(49, 95, 223);

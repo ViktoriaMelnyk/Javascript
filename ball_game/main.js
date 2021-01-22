@@ -5,17 +5,14 @@ canvas.height = window.innerHeight;
 const startGameBtn = document.getElementById('startGameBtn');
 const modal = document.getElementById('modalEl');
 const timeCount = document.getElementById('time');
+const won = document.getElementById('won');
+let beta = 0;
+let gamma = 0;
 
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
 class Player {
-    constructor(x, y, vx, vy, radius, color) {
+    constructor(x, y, radius, color) {
         this.x = x;
         this.y = y;
-        this.vx = vx;
-        this.vy = vy;
         this.radius = radius;
         this.color = color;
     }
@@ -26,18 +23,19 @@ class Player {
         ctx.fill();
         ctx.closePath();
     }
+    move() {
+        this.draw();
+        this.x = this.x + gamma * 0.05;
+        this.y = this.y + beta * 0.05;
+    }
 
+    sensors(ev) {
+        beta = ev.beta;
+        gamma = ev.gamma;
+    }
 }
-let x = canvas.width / 2;
-let y = canvas.height / 2;
-let vx = 0;
-let vy = 0;
-let player = new Player(x, y, vx, vy, 40, 'white');
-let holes = [];
-function init() {
-    player = new Player(x, y, vx, vy, 40, 'white');
-    holes = []; 
-}
+
+
 class Hole {
     constructor(x, y, radius, color, velosity) {
         this.x = x;
@@ -59,7 +57,9 @@ class Hole {
         this.y = this.y + this.velosity.y;
     }
 }
-
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
 function animateHoles() {
     setInterval(() => {
         // console.log('go');
@@ -89,13 +89,23 @@ function animateHoles() {
         };
         holes.push(new Hole(x, y, radius, color, velosity));
         // console.log(holes);
-    }, 200);
+    }, 800);
 }
+
+let x = canvas.width / 2;
+let y = canvas.height / 2;
+let player = new Player(x, y, 40, 'white');
+let holes = [];
+function init() {
+    player = new Player(x, y, 40, 'white');
+    holes = [];
+}
+ 
 let animationId;
 function animation() {
     animationId = requestAnimationFrame(animation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player.draw();
+    player.move();
     holes.forEach((hole) => {
         hole.update();
         //end game
@@ -104,9 +114,10 @@ function animation() {
             console.log('end game');
             cancelAnimationFrame(animationId);
             stopTimer();
+            won.style.display = 'none';
             modal.style.display = 'flex';
         }
-    });
+    }); 
 }
 let counter;
 function startTimer(time) {
@@ -115,12 +126,19 @@ function startTimer(time) {
     function timer() {
         timeCount.textContent = time;
         time--;
+        if (time < 0){
+            cancelAnimationFrame(animationId);
+            clearInterval(counter);
+            modal.style.display = 'flex';
+            won.style.display = 'block';
+        }
     }
 }
 function stopTimer() {
     timeCount.textContent = '0';
     clearInterval(counter);
 }
+
 startGameBtn.addEventListener('click', () => {
     init();
     animation();
@@ -128,5 +146,4 @@ startGameBtn.addEventListener('click', () => {
     startTimer(60);
     modal.style.display = 'none';
 });
-
-
+window.addEventListener('deviceorientation', (ev) => player.sensors(ev));
